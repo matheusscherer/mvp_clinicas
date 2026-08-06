@@ -1,20 +1,5 @@
-#Crie um programa em Python que funcione como um menu de opções utilizando 
-#match-case. O usuário deverá escolher uma opção do menu e cada opção 
-#executará um dos exercícios abaixo. Todos os exercícios devem estar organizados 
-#dentro de um único menu.
-#Regras do programa
-#O programa deve utilizar match-case para construir o menu principal. Cada opção 
-#do menu deve executar um exercício diferente. Deve existir uma opção específica 
-#para sair do programa. Cada exercício deve funcionar de forma independente 
-#dentro do menu. Todos os exercícios devem utilizar tratamento de erros com try e 
-#except para validar entradas e evitar interrupções inesperadas durante a 
-#execução. O programa deve utilizar a biblioteca logging para registrar eventos 
-#importantes, como início e encerramento do programa, erros encontrados, 
-#entradas inválidas e operações realizadas com sucesso. Os registros do logging 
-#devem ser armazenados em um arquivo de log. O tratamento de exceções e o 
-#registro de eventos devem estar presentes em todos os exercícios do programa.
-
 """
+
 Sistema de Reativação de Pacientes - Clínica de Estética/Odontologia
 Módulo: filtro de pacientes elegíveis para retorno + disparo de mensagens via WhatsApp.
 
