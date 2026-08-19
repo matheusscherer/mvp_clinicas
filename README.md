@@ -1,34 +1,31 @@
-# Reativação de pacientes — clínicas
+# Automação de base — exemplo clínica
 
-Python para **filtrar**, **normalizar telefone** e **gerar lista de disparo** de pacientes que fizeram o procedimento há X dias e ainda não voltaram.
+Um processo repetido: planilha de pacientes → quem parou de voltar → telefone no padrão → lista pra WhatsApp.
 
-Usado em clínicas de estética e odontologia. O mesmo motor serve consultório médico e escritório (base morta).
+O motor é o mesmo pra qualquer operação com base parada (consultório, escritório, comercial). Aqui o exemplo está em clínica de estética/odonto.
 
 Você revisa a lista. Nada dispara sem aprovação.
 
-**Oferta comercial:** Reativação de Base · 14 dias · R$ 1.497  
-**Contato:** [contatomatheusscherer@gmail.com](mailto:contatomatheusscherer@gmail.com)
+**Autor:** [Matheus Scherer](https://github.com/matheusscherer) — automação de processos com Python.
 
 ---
 
 ## O que faz
 
 - Lê Excel (`.xlsx`) ou CSV
-- Valida colunas obrigatórias
-- Aplica regras: procedimento, dias mínimos, status de retorno
-- Normaliza telefone para `+55...`
-- Gera mensagem personalizada
-- Exporta `lista_disparo.xlsx` para revisão
-- Dry-run por padrão — envio só depois de confirmar
-- Log estruturado + testes (pytest)
+- Valida colunas
+- Regras: procedimento, dias mínimos, status de retorno
+- Telefone em `+55...`
+- Mensagem personalizada
+- Exporta `lista_disparo.xlsx`
+- Dry-run por padrão
+- Log + testes (pytest)
 
 ---
 
-## Como usar
+## Uso
 
-Colunas da planilha:
-
-`Nome` · `Telefone` · `Procedimento` · `Data_Procedimento` · `Status_Retorno`
+Colunas: `Nome` · `Telefone` · `Procedimento` · `Data_Procedimento` · `Status_Retorno`
 
 ```bash
 git clone https://github.com/matheusscherer/mvp_clinicas.git
@@ -38,48 +35,16 @@ pip install -e ".[dev]"
 python -m mvp_clinicas.main
 ```
 
-O sistema gera `lista_disparo.xlsx`. **Revise** antes de qualquer envio.
-
 ```bash
 pytest -v
 ```
 
----
-
-## Regras de negócio
-
-Em `src/mvp_clinicas/config.py`:
-
-```python
-@dataclass
-class ConfiguracaoFiltro:
-    procedimento_alvo: str = "Botox"
-    dias_minimos_desde_procedimento: int = 150
-    status_sem_retorno: str = "Agendado"
-```
-
-Troca o procedimento e os dias. O resto é a mesma máquina.
+Regras em `src/mvp_clinicas/config.py`. Troca o procedimento e os dias — a máquina é a mesma.
 
 ---
 
 ## Segurança
 
-- Nunca versionar planilha com dado real de paciente
-- `.gitignore` bloqueia `.xlsx`, `.csv`, logs e arquivos do PyWhatKit
-- Envio real só após confirmação explícita
-- Log não vaza dado sensível
+Nunca versionar dado real. `.gitignore` bloqueia planilha, log e PyWhatKit. Envio só com confirmação.
 
----
-
-## Stack
-
-Python 3.10+ · Pandas · openpyxl · pywhatkit (WhatsApp Web) · pytest
-
----
-
-## Autor
-
-**Matheus Scherer** · MTSCH · Porto Alegre  
-[github.com/matheusscherer](https://github.com/matheusscherer)
-
-MIT
+Python 3.10+ · Pandas · openpyxl · pywhatkit · pytest · MIT
