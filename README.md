@@ -1,119 +1,54 @@
-# mvp_clinicas
+# Reativação de pacientes — clínicas
 
-Automação em Python para **filtragem**, **normalização de contatos** e **reativação de pacientes elegíveis** em clínicas de estética/odontologia.
+Python para **filtrar**, **normalizar telefone** e **gerar lista de disparo** de pacientes que fizeram o procedimento há X dias e ainda não voltaram.
 
-O sistema identifica pacientes que realizaram um procedimento (ex: Botox) há mais de X dias e ainda não agendaram retorno, gera uma lista revisável e (opcionalmente) dispara mensagens personalizadas via WhatsApp Web.
+Usado em clínicas de estética e odontologia. O mesmo motor serve consultório médico e escritório (base morta).
 
-> **Objetivo de portfólio**: demonstrar maturidade em Python + Pandas + automação + boas práticas de engenharia de software de forma compreensível para nível Júnior/Pleno inicial.
+Você revisa a lista. Nada dispara sem aprovação.
+
+**Oferta comercial:** Reativação de Base · 14 dias · R$ 1.497  
+**Contato:** [contatomatheusscherer@gmail.com](mailto:contatomatheusscherer@gmail.com)
 
 ---
 
-## Funcionalidades
+## O que faz
 
-- Carrega planilhas Excel (`.xlsx`) ou CSV
+- Lê Excel (`.xlsx`) ou CSV
 - Valida colunas obrigatórias
-- Aplica regras de negócio configuráveis:
-  - Procedimento alvo
-  - Tempo mínimo desde o procedimento
-  - Status de retorno
-- Normaliza telefones para formato internacional (`+55...`)
-- Gera mensagens personalizadas
-- Exporta lista de disparo para revisão manual (segurança)
-- Modo **dry-run** (simulação) por padrão
-- Logging estruturado
-- Testes automatizados com pytest
-
----
-
-## Estrutura do Projeto
-
-```text
-mvp_clinicas/
-├── src/
-│   └── mvp_clinicas/
-│       ├── __init__.py
-│       ├── config.py          # Parâmetros de negócio
-│       ├── data_loader.py     # Leitura de planilhas
-│       ├── validation.py      # Validação de colunas
-│       ├── filters.py         # Regras de elegibilidade
-│       ├── phone.py           # Normalização de telefone
-│       ├── messaging.py       # Mensagens + envio WhatsApp
-│       ├── export.py          # Exportação da lista
-│       └── main.py            # Orquestração do pipeline
-├── tests/
-│   ├── test_filters.py
-│   ├── test_phone.py
-│   ├── test_validation.py
-│   └── test_messages.py
-├── data/
-│   └── examples/              # Dados de exemplo (não versionar dados reais)
-├── logs/
-├── .github/                   # (futuro) CI
-├── .gitignore
-├── .env.example
-├── pyproject.toml
-├── README.md
-└── LICENSE
-```
-
----
-
-## Instalação
-
-```bash
-# Clone o repositório
-git clone https://github.com/matheusscherer/mvp_clinicas.git
-cd mvp_clinicas
-
-# Crie e ative um ambiente virtual
-python -m venv .venv
-source .venv/bin/activate   # Linux/macOS
-# .venv\Scripts\activate    # Windows
-
-# Instale o projeto + dependências de desenvolvimento
-pip install -e ".[dev]"
-```
+- Aplica regras: procedimento, dias mínimos, status de retorno
+- Normaliza telefone para `+55...`
+- Gera mensagem personalizada
+- Exporta `lista_disparo.xlsx` para revisão
+- Dry-run por padrão — envio só depois de confirmar
+- Log estruturado + testes (pytest)
 
 ---
 
 ## Como usar
 
-1. Prepare uma planilha com as colunas:
-   - `Nome`
-   - `Telefone`
-   - `Procedimento`
-   - `Data_Procedimento`
-   - `Status_Retorno`
+Colunas da planilha:
 
-2. Execute:
+`Nome` · `Telefone` · `Procedimento` · `Data_Procedimento` · `Status_Retorno`
 
 ```bash
+git clone https://github.com/matheusscherer/mvp_clinicas.git
+cd mvp_clinicas
+python -m venv .venv && source .venv/bin/activate
+pip install -e ".[dev]"
 python -m mvp_clinicas.main
-# ou, se instalado via pyproject:
-mvp-clinicas
 ```
 
-3. Informe o caminho da planilha quando solicitado.
-
-4. O sistema gera `lista_disparo.xlsx`. **Revise** antes de confirmar o envio.
-
-5. Por padrão o envio é simulado (dry-run). Só dispara de verdade se você confirmar.
-
----
-
-## Testes
+O sistema gera `lista_disparo.xlsx`. **Revise** antes de qualquer envio.
 
 ```bash
 pytest -v
-# com cobertura:
-pytest --cov=mvp_clinicas --cov-report=term-missing
 ```
 
 ---
 
-## Configuração de regras de negócio
+## Regras de negócio
 
-As regras ficam centralizadas em `src/mvp_clinicas/config.py`:
+Em `src/mvp_clinicas/config.py`:
 
 ```python
 @dataclass
@@ -121,48 +56,30 @@ class ConfiguracaoFiltro:
     procedimento_alvo: str = "Botox"
     dias_minimos_desde_procedimento: int = 150
     status_sem_retorno: str = "Agendado"
-    # ... colunas
 ```
 
-Altere os valores conforme a necessidade da clínica.
+Troca o procedimento e os dias. O resto é a mesma máquina.
 
 ---
 
-## Segurança e boas práticas
+## Segurança
 
-- **Nunca** versionar planilhas com dados reais de pacientes
-- O `.gitignore` já bloqueia `.xlsx`, `.csv`, logs e arquivos do PyWhatKit
-- O envio real só acontece após confirmação explícita do operador
-- Logs não expõem dados sensíveis desnecessariamente
+- Nunca versionar planilha com dado real de paciente
+- `.gitignore` bloqueia `.xlsx`, `.csv`, logs e arquivos do PyWhatKit
+- Envio real só após confirmação explícita
+- Log não vaza dado sensível
 
 ---
 
 ## Stack
 
-- Python 3.10+
-- Pandas
-- openpyxl
-- pywhatkit (WhatsApp Web)
-- pytest
-
----
-
-## Roadmap / Próximos passos possíveis
-
-- [ ] GitHub Actions (CI com pytest)
-- [ ] Suporte a configuração via `.env` / CLI args
-- [ ] Mais testes de integração
-- [ ] Template de planilha de exemplo em `data/examples/`
+Python 3.10+ · Pandas · openpyxl · pywhatkit (WhatsApp Web) · pytest
 
 ---
 
 ## Autor
 
-**Matheus Scherer**  
-[GitHub](https://github.com/matheusscherer) · Porto Alegre, Brazil
-
----
-
-## Licença
+**Matheus Scherer** · MTSCH · Porto Alegre  
+[github.com/matheusscherer](https://github.com/matheusscherer)
 
 MIT
