@@ -1,26 +1,28 @@
-# Lista de ação — base parada vira planilha revisável
+# Action List Generator
 
-Lê Excel/CSV de uma base (exemplo: clínica), aplica regra (procedimento, dias, status), normaliza telefone e exporta `lista_disparo.xlsx`.
+Idle customer base becomes a reviewable action list.
 
-Dry-run é o padrão. Nada dispara sozinho.
+Reads an Excel/CSV base (clinic example), applies rules (procedure, days, status), normalizes phone numbers and exports `lista_disparo.xlsx`.
 
-O exemplo está em estética/odonto. O filtro é o mesmo para qualquer operação com base parada — consultório, escritório, comercial.
+Dry-run is the default. Nothing sends by itself.
 
-**Autor:** [Matheus Scherer](https://github.com/matheusscherer) · Porto Alegre
+The example is aesthetics/dental. The same filter works for any operation with an idle base — clinic, office, sales.
+
+**Author:** [Matheus Scherer](https://github.com/matheusscherer) · Porto Alegre, Brazil
 
 ---
 
-## O que faz
+## What it does
 
-- Lê `.xlsx` ou CSV
-- Valida colunas obrigatórias
-- Filtra por procedimento, data e status
-- Telefone em `+55...`
-- Exporta lista para revisão
-- Dry-run por padrão
+- Reads `.xlsx` or CSV
+- Validates required columns
+- Filters by procedure, date and status
+- Normalizes phone to `+55...`
+- Exports list for review
+- Dry-run by default
 - Log + pytest
 
-Envio via WhatsApp Web (`pywhatkit`) existe no código, **desligado até confirmação explícita**. Não use dado real de paciente neste repo.
+WhatsApp Web sending (`pywhatkit`) exists in the code, **disabled until explicit confirmation**. Do not use real patient data in this repo.
 
 ---
 
@@ -30,9 +32,9 @@ Python 3.10+ · Pandas · openpyxl · pywhatkit · pytest · GitHub Actions · M
 
 ---
 
-## Como executar
+## How to run
 
-Colunas: `Nome` · `Telefone` · `Procedimento` · `Data_Procedimento` · `Status_Retorno`
+Required columns: `Nome` · `Telefone` · `Procedimento` · `Data_Procedimento` · `Status_Retorno`
 
 ```bash
 git clone https://github.com/matheusscherer/mvp_clinicas.git
@@ -43,36 +45,36 @@ python -m mvp_clinicas.main
 pytest -v
 ```
 
-Há CSV de exemplo em `data/examples/pacientes_exemplo.csv` (dado fictício). Regras em `src/mvp_clinicas/config.py`.
+Example CSV in `data/examples/pacientes_exemplo.csv` (fictional data). Rules in `src/mvp_clinicas/config.py`.
 
 ---
 
-## Evidência / demo
+## Evidence / demo
 
-- Dry-run loga o que *enviaria* e não envia
-- Testes de filtro, telefone e validação
-- CI em Python 3.10 / 3.11 / 3.12
+- Dry-run logs what it *would* send and does not send
+- Tests for filter, phone and validation
+- CI on Python 3.10 / 3.11 / 3.12
 
-Não há cliente. Não há disparo em produção. Não há métrica de retorno.
-
----
-
-## Limitações
-
-- Caminho da planilha entra via `input()`, não via CLI.
-- Mensagem de exemplo é de um procedimento específico (Botox).
-- `pywhatkit` depende de WhatsApp Web no desktop — frágil, fora de ToS para escala, não é RPA.
+No client. No production sending. No return metrics.
 
 ---
 
-## O que isto NÃO é
+## Limitations
 
-- Não é RPA.
-- Não é WhatsApp Business API.
-- Não é CRM.
-- Não é case de clínica real. Dado de exemplo é fictício.
-- Não processe dado pessoal real neste repositório (LGPD).
+- Spreadsheet path comes via `input()`, not CLI.
+- Example message is for a specific procedure (Botox).
+- `pywhatkit` depends on desktop WhatsApp Web — fragile, outside ToS at scale, not RPA.
 
 ---
 
-Python 3.10+ · Pandas · openpyxl · pytest · MIT
+## What this is NOT
+
+- Not RPA.
+- Not WhatsApp Business API.
+- Not a CRM.
+- Not a real clinic case. Example data is fictional.
+- Do not process real personal data in this repository (LGPD / privacy).
+
+---
+
+[LinkedIn](https://linkedin.com/in/scherermatheus) · [Site](https://mtsch-site.vercel.app) · [GitHub](https://github.com/matheusscherer)
