@@ -4,7 +4,6 @@ import time
 from typing import Optional
 
 import pandas as pd
-import pywhatkit as kit
 
 import logging
 
@@ -71,6 +70,8 @@ def enviar_mensagens_whatsapp(
                 linha["mensagem"][:50],
             )
         return
+
+    import pywhatkit as kit  # lazy: pywhatkit puxa GUI e quebra CI/headless
 
     total = len(df_disparo)
     for indice, linha in enumerate(df_disparo.itertuples(), start=1):
